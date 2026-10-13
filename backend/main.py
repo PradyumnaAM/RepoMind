@@ -3,10 +3,109 @@ from backend.repository import load_repository
 from backend.chunker import chunk_python_document
 from backend.embeddings import embed_chunks, embed_question, split_long_chunk, count_tokens
 from backend.retrieval import retrieve_chunks
+from backend.vector_store import get_collection, store_chunks,search_chunks,reset_storage
+from backend.rag import answer_question
 import numpy as np
+
 
 def main():
     print("Welcome to RepoMind!")
+
+############################################################################
+## Testing rag implementation on LLM
+document = {
+    "path": "example.py",
+    "content": """
+def authenticate_user(username, password):
+    return username == "admin" and password == "secret"
+
+def calculate_total(prices):
+    return sum(prices)
+
+def send_notification(message):
+    print(message)
+"""
+}
+
+
+question = "Where does the application check login credentials?"
+
+answer = answer_question(question, k=3)
+
+print("\n===== REPOMIND ANSWER =====")
+print(answer)
+
+############################################################################
+
+## Testing chromabase deletion
+
+    # document = {
+    #     "path": "example.py",
+    #     "content": """
+    # def authenticate_user(username, password):
+    #     return username == "admin" and password == "secret"
+
+    # def calculate_total(prices):
+    #     return sum(prices)
+
+    # def send_notification(message):
+    #     print(message)
+    # """
+    # }
+
+    # embedded_chunks = embed_chunks(document)
+
+    # collection = get_collection()
+    # print("Before reset:", collection.count())
+
+    # collection = reset_storage()
+    # print("After reset:", collection.count())
+
+    # store_chunks(embedded_chunks)
+    # print("After re-indexing:", collection.count())
+
+
+############################################################################
+## Testing vectorbase search
+
+    # question = "Where does the application check login credentials?"
+
+    # question_embedding = embed_question(question)
+
+    # results = search_chunks(question_embedding, k=3)
+
+    # for i, metadata in enumerate(results["metadatas"][0]):
+    #     print("Function:", metadata["name"])
+    #     print("File:", metadata["path"])
+    #     print("Distance:", results["distances"][0][i])
+    #     print("Code:", results["documents"][0][i])
+    #     print("----------------------")
+
+
+############################################################################
+## Testing vector database
+
+    # document = {
+    #     "path": "example.py",
+    #     "content": """
+    # def authenticate_user(username, password):
+    #     return username == "admin" and password == "secret"
+
+    # def calculate_total(prices):
+    #     return sum(prices)
+
+    # def send_notification(message):
+    #     print(message)
+    # """
+    # }
+
+    # embedded_chunks = embed_chunks(document)
+    # stored_count = store_chunks(embedded_chunks)
+
+    # collection = get_collection()
+
+    # print("Stored this run:", stored_count)
+    # print("Total database records:", collection.count())
 
 ############################################################################
 ## Testing embedding and chunking 
