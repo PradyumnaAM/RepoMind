@@ -12,28 +12,28 @@ def main():
     print("Welcome to RepoMind!")
 
 ############################################################################
-## Testing rag implementation on LLM
-document = {
-    "path": "example.py",
-    "content": """
-def authenticate_user(username, password):
-    return username == "admin" and password == "secret"
+## Testing RAG implementation with LLM
+    # document = {
+    #     "path": "example.py",
+    #     "content": """
+    # def authenticate_user(username, password):
+    #     return username == "admin" and password == "secret"
 
-def calculate_total(prices):
-    return sum(prices)
+    # def calculate_total(prices):
+    #     return sum(prices)
 
-def send_notification(message):
-    print(message)
-"""
-}
+    # def send_notification(message):
+    #     print(message)
+    # """
+    # }
 
 
-question = "Where does the application check login credentials?"
+    # question = "Where does the application check login credentials?"
 
-answer = answer_question(question, k=3)
+    # answer = answer_question(question, k=3)
 
-print("\n===== REPOMIND ANSWER =====")
-print(answer)
+    # print("\n===== REPOMIND ANSWER =====")
+    # print(answer)
 
 ############################################################################
 
