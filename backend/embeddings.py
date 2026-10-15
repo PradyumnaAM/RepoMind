@@ -45,14 +45,15 @@ def count_tokens(text) -> int:
     return len(tokens)
 
 def is_chunk_too_long(text) -> bool:
-    tokens = embedder.tokenizer.encode(text)
+    tokens = embedder.tokenizer.encode(text, verbose=False)
     return len(tokens) > embedder.max_seq_length
     
 def split_long_chunk(text, chunk_size=200, overlap=40):
     encoded = embedder.tokenizer(
         text,
         add_special_tokens=False,
-        return_offsets_mapping=True
+        return_offsets_mapping=True,
+        verbose = False
     )
 
     offsets = encoded["offset_mapping"]
