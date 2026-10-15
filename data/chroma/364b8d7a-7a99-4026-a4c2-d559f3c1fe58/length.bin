@@ -1,0 +1,5 @@
+dataset = load_dataset("amazon_us_reviews", "Electronics_v1_00", split="train")
+wanted_features = ["review_body", "review_headline", "product_title", "start_rating"]
+dataset = dataset.remove_columns([x for x in dataset.features if x not in wanted_features])
+dataset = dataset.filter(lambda x: x['verified_purchase'] and len(x['review_body']) > 100)
+dataset = dataset.shuffle(42).select.select(range(1

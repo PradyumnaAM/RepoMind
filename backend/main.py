@@ -5,14 +5,62 @@ from backend.embeddings import embed_chunks, embed_question, split_long_chunk, c
 from backend.retrieval import retrieve_chunks
 from backend.vector_store import get_collection, store_chunks,search_chunks,reset_storage
 from backend.rag import answer_question
+from backend.indexer import index_repository
 import numpy as np
 
 
 def main():
     print("Welcome to RepoMind!")
 
+    while True:
+        print("Enter 1 for: Indexing your repository: ")
+        print("Enter 2 to ask the LLM a question about your repository: ")
+        print("Enter 3 to exit the program: ")
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            repo_path = input("Please enter your repository path: ")
+            try:
+                result = index_repository(repo_path)
+                print(f"Files indexed: {result['files_indexed']}")
+                print(f"Chunks stored: {result['chunks_stored']}")
+            except ValueError as error:
+                print(f"Indexing Failed: {error}")
+            
+        elif choice == "2":
+            user_question = input("Enter your question: ").strip()
+            if not user_question:
+                print("Please enter a valid question.")
+                continue
+            answer = answer_question(user_question, k=5)
+            print(f"Repo Mind: {answer}")
+
+        elif choice == "3":
+            print("Goodbye! Thanks for using RepoMind.")
+            break
+
+        else:
+            print("Invalid option")
+
+if __name__ == "__main__":
+    main()
+
+############################################################################
+## Testing question on repository
+
+    # print("Welcome to RepoMind!")
+
+
+    # question = "Which function loads repository files and filters unsupported extensions?"
+
+    # answer = answer_question(question, k=5)
+
+    # print("\n===== REPOMIND ANSWER =====")
+    # print(answer)
+
 ############################################################################
 ## Testing RAG implementation with LLM
+
     # document = {
     #     "path": "example.py",
     #     "content": """
