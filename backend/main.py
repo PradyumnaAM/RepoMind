@@ -19,7 +19,7 @@ def main():
         choice = input("Choose an option: ")
 
         if choice == "1":
-            repo_path = input("Please enter your repository path: ")
+            repo_path = input("Please enter your repository path: ").strip()
             try:
                 result = index_repository(repo_path)
                 print(f"Files indexed: {result['files_indexed']}")
@@ -41,6 +41,7 @@ def main():
 
         else:
             print("Invalid option")
+
 
 if __name__ == "__main__":
     main()

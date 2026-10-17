@@ -17,20 +17,30 @@ def embed_chunks(document):
 
             for small_chunk in smaller_chunks:
                 new_chunk = chunk.copy()
-                new_chunk["content"] = small_chunk
+                position = small_chunk["start_char"]
+                newline_count = content[:position].count("\n")
+                
+                new_chunk["content"] = small_chunk["content"]
+                new_chunk["start_line"] = chunk["start_line"] + newline_count
+                new_chunk["end_line"] = new_chunk["start_line"] + small_chunk["content"].rstrip("\n").count("\n")
+
                 processed_chunks.append(new_chunk)
         else:
             processed_chunks.append(chunk)
 
     for processed_chunk in processed_chunks:
-        contents.append(processed_chunk["content"])   
+        embedding_text = (
+            f"Function: {processed_chunk['name']}\n"
+            f"File: {processed_chunk['path']}\n"
+            f"Code:\n{processed_chunk['content']}"
+        )
+        contents.append(embedding_text)
     embeddings = embedder.encode(contents)
 
     for processed_chunk, embedding in zip(processed_chunks, embeddings):
         dictionary = {
             "chunk" : processed_chunk,
             "embedding" : embedding
-
         }
 
         results.append(dictionary)
@@ -64,11 +74,16 @@ def split_long_chunk(text, chunk_size=200, overlap=40):
         end = start + chunk_size
         start_char = offsets[start][0]
         last_token_index = min(end, len(offsets)) - 1
-        end_char = offsets[last_token_index][1]
-        
+        end_char = offsets[last_token_index][1]        
         text_chunk = text[start_char:end_char]
 
-        small_chunks.append(text_chunk)
+        dictionary = {
+            "content": text_chunk,
+            "start_char": start_char,
+            "end_char": end_char
+        }
+
+        small_chunks.append(dictionary)
 
         if end >= len(offsets):
             break

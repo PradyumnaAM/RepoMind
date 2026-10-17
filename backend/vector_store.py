@@ -33,6 +33,8 @@ def store_chunks(embedded_chunks):
             "name" : chunk["name"],
             "path" : chunk["path"],
             "type" : chunk["type"],
+            "start_line" : chunk["start_line"],
+            "end_line" : chunk["end_line"]
         }
 
         metadata.append(metadata_content)
